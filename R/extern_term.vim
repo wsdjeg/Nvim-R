@@ -119,7 +119,13 @@ function SendCmdToR_Term(...)
         let rlog = substitute(rlog, '\r', ' ', 'g')
         call RWarningMsg(rlog)
         call ClearRInfo()
-        return 0
+        call StartR('R')
+        if a:0 == 2 && a:2 == 0
+            call g:SendCmdToR(a:1, a:2)
+        else
+            call g:SendCmdToR(a:1)
+        endif
+        return 1
     endif
     return 1
 endfunction
