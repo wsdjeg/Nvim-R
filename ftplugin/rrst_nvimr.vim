@@ -1,4 +1,3 @@
-
 if exists("g:disable_r_ftplugin")
     finish
 endif
