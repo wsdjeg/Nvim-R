@@ -6,7 +6,7 @@ endif
 
 if has("nvim")
     if !has("nvim-" . s:nvv)
-        call RWarningMsg("Nvim-R requires Neovim >= " . s:nvv . ".")
+        call r#logger#warn("Nvim-R requires Neovim >= " . s:nvv . ".")
         let g:rplugin_failed = 1
         finish
     endif
