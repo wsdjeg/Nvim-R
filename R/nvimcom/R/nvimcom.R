@@ -62,8 +62,12 @@ NvimcomEnv$pkgdescr <- list()
            as.integer(getOption("nvimcom.setwidth")),
            path.package("nvimcom"),
            as.character(utils::packageVersion("nvimcom")),
-           paste0(paste(.packages(), collapse = " "), " Dec", getOption("OutDec")),
-           paste0(version$major, ".", version$minor),
+           paste(paste0(version$major, ".", version$minor),
+                  getOption("OutDec"),
+                  getOption("prompt"),
+                  getOption("continue"),
+                  paste(.packages(), collapse = " "),
+                  sep = "\x02"),
            as.integer(getOption("nvimcom.lsenvtol")),
            PACKAGE="nvimcom")
     }
@@ -167,6 +171,25 @@ nvim_viewdf <- function(oname, fenc = "")
     }
     return(invisible(NULL))
 }
+
+NvimR.source <- function(..., print.eval = TRUE, spaced = FALSE)
+{
+    if (with(R.Version(), paste(major, minor, sep = '.')) >= '3.4.0') {
+        base::source(getOption("nvimcom.source.path"), ..., print.eval = print.eval, spaced = spaced)
+    } else {
+        base::source(getOption("nvimcom.source.path"), ..., print.eval = print.eval)
+    }
+}
+
+NvimR.selection <- function(..., local = parent.frame()) NvimR.source(..., local = local)
+
+NvimR.paragraph <- function(..., local = parent.frame()) NvimR.source(..., local = local)
+
+NvimR.block <- function(..., local = parent.frame()) NvimR.source(..., local = local)
+
+NvimR.function <- function(..., local = parent.frame()) NvimR.source(..., local = local)
+
+NvimR.chunk <- function(..., local = parent.frame()) NvimR.source(..., local = local)
 
 source.and.clean <- function(f, ...)
 {
